@@ -1,9 +1,16 @@
 function splitSpecial(input) {
-    let output = input.split(/(?=[.-/ /1-9])|(?<=[.-/ /1-9])/g);
+    let output = input.split(/(?=[.-/ /0-9])|(?<=[.-/ /0-9])/g);
     return output;
 }
 
-const mapping = { 1: 2, 2: 4, 5: 8 };
+const mapping = {
+    122: 228,
+    90: 196,
+    228: 246,
+    196: 214,
+    246: 97,
+    214: 65
+}
 
 function SwapKeyValuePairs() {
     let swap = Object.entries(mapping).map(([key, value]) => [value, key]);
