@@ -3,38 +3,55 @@ function splitSpecial(input) {
     return output;
 }
 
-const mapping = {
-    // 97-121 -> +1
-    // 65-89 -> +1
-    122: 228, // z -> ä
-    90: 196, // Z -> Ä
-    228: 246, // ä -> ö
-    196: 214, // Ä -> Ö
-    246: 97, // ö -> a
-    214: 65 // Ö -> A
-}
-
-function SwapKeyValuePairs() {
+function SwapKeyValuePairs(mapping) {
     let swap = Object.entries(mapping).map(([key, value]) => [value, key]);
     swap = Object.fromEntries(swap);
 
     return swap;
 }
 
-// class Salakirjoitus {
-//     constructor(input, crypted) {
-//         this.input = input;
-//         this.crypted = crypted;
-//     }
+class Salakirjoitus {
+    constructor(input, crypted) {
+        this.input = input;
+        this.crypted = crypted;
+    }
 
-//     get decrypted() {
-//         return this.crypted ? crypt(reverse = true) : this.input;
-//     }
+    get decrypted() {
+        return this.crypted ? this.crypt(true) : this.input;
+    }
 
-//     get encrypted() {
-//         return this.crypted ? this.input : crypt(reverse = false);
-//     }
-// }
+    get encrypted() {
+        return this.crypted ? this.input : this.crypt(false);
+    }
+
+    crypt(reverse) {
+        let mapping = {
+            122: 228, // z -> ä
+            90: 196, // Z -> Ä
+            228: 246, // ä -> ö
+            196: 214, // Ä -> Ö
+            246: 97, // ö -> a
+            214: 65 // Ö -> A
+        };
+
+        mapping = reverse ? SwapKeyValuePairs(mapping) : mapping;
+        let returnCodes = this.input.split('');
+
+        returnCodes = returnCodes.map(v => {
+            let charCode = v.charCodeAt();
+
+            if (charCode in mapping) {
+                return mapping[charCode]
+            }
+            if (97 <= charCode && charCode <= 122) {
+                return reverse ? charCode-1 : charCode+1
+            }
+            return charCode
+        });
+
+        return String.fromCharCode(...returnCodes)
+    }
+}
 
 function upperCaseFirstLetter(input) {
     input = input.toLowerCase();
