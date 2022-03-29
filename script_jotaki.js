@@ -3,7 +3,7 @@ function splitSpecial(input) {
     return output;
 }
 
-function SwapKeyValuePairs() {
+function SwapKeyValuePairs(mapping) {
     let swap = Object.entries(mapping).map(([key, value]) => [value, key]);
     swap = Object.fromEntries(swap);
 
@@ -17,14 +17,14 @@ class Salakirjoitus {
     }
 
     get decrypted() {
-        return this.crypted ? this.crypt({reverse: true}) : this.input;
+        return this.crypted ? this.crypt(true) : this.input;
     }
 
     get encrypted() {
-        return this.crypted ? this.input : this.crypt({reverse: false});
+        return this.crypted ? this.input : this.crypt(false);
     }
 
-    crypt({reverse}) {
+    crypt(reverse) {
         let mapping = {
             122: 228, // z -> ä
             90: 196, // Z -> Ä
@@ -35,7 +35,7 @@ class Salakirjoitus {
         };
 
         mapping = reverse ? SwapKeyValuePairs(mapping) : mapping;
-        const returnCodes = this.input.split('');
+        let returnCodes = this.input.split('');
 
         returnCodes = returnCodes.map(v => {
             let charCode = v.charCodeAt();
